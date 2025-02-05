@@ -176,12 +176,6 @@ void main() {
 
         old_u = u;
 
-        {{#light_travel_time}}
-        {{#gravitational_time_dilation}}
-        dt = sqrt(du*du + u*u*(1.0-u))/(u*u*(1.0-u))*step;
-        {{/gravitational_time_dilation}}
-        {{/light_travel_time}}
-
         // Leapfrog scheme
         u += du*step;
         float ddu = -u*(1.0 - 1.5*u*u);
@@ -197,20 +191,6 @@ void main() {
         ray = pos-old_pos;
         float solid_isec_t = 2.0;
         float ray_l = length(ray);
-
-        {{#light_travel_time}}
-        {{#gravitational_time_dilation}}
-        float mix = smooth_step(1.0/u, 8.0);
-        dt = mix*ray_l + (1.0-mix)*dt;
-        {{/gravitational_time_dilation}}
-        {{^gravitational_time_dilation}}
-        dt = ray_l;
-        {{/gravitational_time_dilation}}
-        {{/light_travel_time}}
-
-        {{#light_travel_time}}
-        t -= dt;
-        {{/light_travel_time}}
 
         if (solid_isec_t <= 1.0) u = 2.0; // break
         if (u > 1.0) break;
