@@ -58,7 +58,6 @@ function Shader(mustacheTemplate) {
     // Compile-time shader parameters
     this.parameters = {
         n_steps: 100,
-        quality: 'medium',
         lorentz_contraction: true,
         gravitational_time_dilation: true,
         aberration: true,
@@ -217,20 +216,6 @@ function setupGUI() {
     }
 
     var gui = new dat.GUI();
-
-    gui.add(p, 'quality', ['fast', 'medium', 'high']).onChange(function (value) {
-        switch(value) {
-        case 'fast':
-            p.n_steps = 40;
-            break;
-        case 'medium':
-            p.n_steps = 100;
-            break;
-        case 'high':
-            p.n_steps = 200;
-            break;
-        }
-
         updateShader();
     });
 
