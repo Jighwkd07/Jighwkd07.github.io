@@ -131,8 +131,7 @@ function init(textures) {
         cam_vel: { type: "v3", value: new THREE.Vector3() },
 
         star_texture: { type: "t", value: textures.stars },
-        galaxy_texture: { type: "t", value: textures.galaxy },
-        spectrum_texture: { type: "t", value: textures.spectra }
+        galaxy_texture: { type: "t", value: textures.galaxy }
     };
 
     updateUniforms = function() {
