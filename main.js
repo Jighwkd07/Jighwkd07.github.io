@@ -82,11 +82,6 @@ function Shader(mustacheTemplate) {
         n_steps: 100,
         quality: 'medium',
         accretion_disk: true,
-        planet: {
-            enabled: true,
-            distance: 7.0,
-            radius: 0.4
-        },
         lorentz_contraction: true,
         gravitational_time_dilation: true,
         aberration: true,
@@ -100,20 +95,12 @@ function Shader(mustacheTemplate) {
             orbital_inclination: -10
         },
 
-        planetEnabled: function() {
-            return this.planet.enabled && this.quality !== 'fast';
-        },
-
         observerMotion: function() {
             return this.observer.motion;
         }
     };
     var that = this;
     this.needsUpdate = false;
-
-    this.hasMovingParts = function() {
-        return this.parameters.planet.enabled || this.parameters.observer.motion;
-    };
 
     this.compile = function() {
         return Mustache.render(mustacheTemplate, that.parameters);
@@ -183,20 +170,13 @@ function init(textures) {
         cam_z: { type: "v3", value: new THREE.Vector3() },
         cam_vel: { type: "v3", value: new THREE.Vector3() },
 
-        planet_distance: { type: "f" },
-        planet_radius: { type: "f" },
-
         star_texture: { type: "t", value: textures.stars },
         accretion_disk_texture: { type: "t",  value: textures.accretion_disk },
         galaxy_texture: { type: "t", value: textures.galaxy },
-        planet_texture: { type: "t", value: textures.moon },
         spectrum_texture: { type: "t", value: textures.spectra }
     };
 
     updateUniforms = function() {
-        uniforms.planet_distance.value = shader.parameters.planet.distance;
-        uniforms.planet_radius.value = shader.parameters.planet.radius;
-
         uniforms.resolution.value.x = renderer.domElement.width;
         uniforms.resolution.value.y = renderer.domElement.height;
 
@@ -273,11 +253,9 @@ function setupGUI() {
     var gui = new dat.GUI();
 
     gui.add(p, 'quality', ['fast', 'medium', 'high']).onChange(function (value) {
-        $('.planet-controls').show();
         switch(value) {
         case 'fast':
             p.n_steps = 40;
-            $('.planet-controls').hide();
             break;
         case 'medium':
             p.n_steps = 100;
@@ -304,17 +282,6 @@ function setupGUI() {
     });
     folder.add(p.observer, 'distance').min(1.5).max(30).onChange(updateCamera);
     folder.open();
-
-    folder = gui.addFolder('Planet');
-    folder.add(p.planet, 'enabled').onChange(function(enabled) {
-        updateShader();
-        var controls = $('.indirect-planet-controls').show();
-        if (enabled) controls.show();
-        else controls.hide();
-    });
-    folder.add(p.planet, 'distance').min(1.5).onChange(updateUniforms);
-    folder.add(p.planet, 'radius').min(0.01).max(2.0).onChange(updateUniforms);
-    $(folder.domElement).addClass('planet-controls');
     //folder.open();
 
     
@@ -327,11 +294,9 @@ function setupGUI() {
     folder.add(p, 'beaming').onChange(updateShader);
     folder.add(p, 'doppler_shift').onChange(updateShader);
     setGuiRowClass(
-        folder.add(p, 'gravitational_time_dilation').onChange(updateShader),
-        'planet-controls indirect-planet-controls');
+        folder.add(p, 'gravitational_time_dilation').onChange(updateShader);
     setGuiRowClass(
-        folder.add(p, 'lorentz_contraction').onChange(updateShader),
-        'planet-controls indirect-planet-controls');
+        folder.add(p, 'lorentz_contraction').onChange(updateShader);
 
     folder.open();
 
@@ -420,7 +385,7 @@ function animate() {
     camera.updateMatrixWorld();
     camera.matrixWorldInverse.getInverse( camera.matrixWorld );
 
-    if (shader.needsUpdate || shader.hasMovingParts() ||
+    if (shader.needsUpdate ||
         frobeniusDistance(camera.matrixWorldInverse, lastCameraMat) > 1e-10) {
 
         shader.needsUpdate = false;
