@@ -293,12 +293,6 @@ function setupGUI() {
     folder.add(p, 'aberration').onChange(updateShader);
     folder.add(p, 'beaming').onChange(updateShader);
     folder.add(p, 'doppler_shift').onChange(updateShader);
-    setGuiRowClass(
-        folder.add(p, 'gravitational_time_dilation').onChange(updateShader)
-    );
-    setGuiRowClass(
-        folder.add(p, 'lorentz_contraction').onChange(updateShader)
-    );
 
     folder.open();
 
