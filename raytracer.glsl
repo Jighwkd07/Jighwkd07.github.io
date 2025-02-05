@@ -117,7 +117,6 @@ void main() {
     float ray_doppler_factor = 1.0;
 
     float gamma = 1.0/sqrt(1.0-dot(cam_vel,cam_vel));
-    ray_doppler_factor = gamma*(1.0 + dot(ray,-cam_vel));
 
     float step = 0.01;
     vec4 color = vec4(0.0,0.0,0.0,1.0);
