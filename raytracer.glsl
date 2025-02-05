@@ -30,8 +30,7 @@ uniform vec3 cam_y;
 uniform vec3 cam_z;
 uniform vec3 cam_vel;
 
-uniform sampler2D galaxy_texture, star_texture,
-    accretion_disk_texture, spectrum_texture;
+uniform sampler2D galaxy_texture, star_texture, spectrum_texture;
 
 // stepping parameters
 const int NSTEPS = {{n_steps}};
