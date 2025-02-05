@@ -42,10 +42,6 @@ Observer.prototype.move = function(dt) {
     var v = 0;
     r = this.position.length();
 
-    if (shader.parameters.gravitational_time_dilation) {
-        dt = Math.sqrt((dt*dt * (1.0 - v*v)) / (1-1.0/r));
-    }
-
     this.time += dt;
 };
 
@@ -58,8 +54,6 @@ function Shader(mustacheTemplate) {
     // Compile-time shader parameters
     this.parameters = {
         n_steps: 100,
-        lorentz_contraction: true,
-        gravitational_time_dilation: true,
         time_scale: 1.0,
         observer: {
             distance: 11.0,
