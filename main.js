@@ -122,8 +122,7 @@ function degToRad(a) { return Math.PI * a / 180.0; }
     var textures = {};
 
     function whenLoaded() {
-        init(textures);
-        $('#loader').hide();
+        init(textures)
         $('.initially-hidden').removeClass('initially-hidden');
         animate();
     }
