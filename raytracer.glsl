@@ -116,8 +116,6 @@ void main() {
     float ray_intensity = 1.0;
     float ray_doppler_factor = 1.0;
 
-    float gamma = 1.0/sqrt(1.0-dot(cam_vel,cam_vel));
-
     float step = 0.01;
     vec4 color = vec4(0.0,0.0,0.0,1.0);
 
