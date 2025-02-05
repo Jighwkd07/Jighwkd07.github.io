@@ -241,12 +241,9 @@ function init(textures) {
 
 //사용자 인터페이스 설정
 function setupGUI() {
-
-    var hint = $('#hint-text');
     var p = shader.parameters;
 
     function updateShader() {
-        hint.hide();
         scene.updateShader();
     }
 
@@ -273,12 +270,6 @@ function setupGUI() {
     folder.add(p.observer, 'motion').onChange(function(motion) {
         updateCamera();
         updateShader();
-        if (motion) {
-            hint.text('Moving observer; drag to rotate camera');
-        } else {
-            hint.text('Stationary observer; drag to orbit around');
-        }
-        hint.fadeIn();
     });
     folder.add(p.observer, 'distance').min(1.5).max(30).onChange(updateCamera);
     folder.open();
