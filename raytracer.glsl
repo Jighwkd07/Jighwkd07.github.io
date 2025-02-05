@@ -329,31 +329,6 @@ void main() {
         {{/gravitational_time_dilation}}
         {{/light_travel_time}}
 
-        {{#planetEnabled}}
-        if (
-            (
-                old_pos.z * pos.z < 0.0 ||
-                min(abs(old_pos.z), abs(pos.z)) < PLANET_RADIUS
-            ) &&
-            max(u, old_u) > 1.0/(PLANET_DISTANCE+PLANET_RADIUS) &&
-            min(u, old_u) < 1.0/(PLANET_DISTANCE-PLANET_RADIUS)
-        ) {
-
-            {{#light_travel_time}}
-            float planet_ang0 = t * PLANET_ORBITAL_ANG_VEL;
-            vec3 planet_pos0 = vec3(cos(planet_ang0), sin(planet_ang0), 0)*PLANET_DISTANCE;
-            {{/light_travel_time}}
-
-            vec4 planet_isec = planet_intersection(old_pos, ray, t, dt,
-                    planet_pos0, ray_doppler_factor);
-            if (planet_isec.w > 0.0) {
-                solid_isec_t = planet_isec.w;
-                planet_isec.w = 1.0;
-                color += planet_isec;
-            }
-        }
-        {{/planetEnabled}}
-
         {{#accretion_disk}}
         if (old_pos.z * pos.z < 0.0) {
             // crossed plane z=0
