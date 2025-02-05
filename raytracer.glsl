@@ -62,41 +62,9 @@ vec3 contract(vec3 x, vec3 d, float mult) {
     return (x-par*d) + d*par*mult;
 }
 
-vec4 galaxy_color(vec2 tex_coord, float doppler_factor) {
-
+vec4 galaxy_color(vec2 tex_coord) {
     vec4 color = texture2D(galaxy_texture, tex_coord);
-    {{^observerMotion}}
     return color;
-    {{/observerMotion}}
-
-    {{#observerMotion}}
-    vec4 ret = vec4(0.0,0.0,0.0,0.0);
-    float red = max(0.0, color.r - color.g);
-
-    const float H_ALPHA_RATIO = 0.1;
-    const float TEMPERATURE_BIAS = 0.95;
-
-    color.r -= red*H_ALPHA_RATIO;
-
-    float i1 = max(color.r, max(color.g, color.b));
-    float ratio = (color.g+color.b) / color.r;
-
-    if (i1 > 0.0 && color.r > 0.0) {
-
-        float temperature = TEMPERATURE_LOOKUP(ratio) * TEMPERATURE_BIAS;
-        color = BLACK_BODY_COLOR(temperature);
-
-        float i0 = max(color.r, max(color.g, color.b));
-        if (i0 > 0.0) {
-            temperature /= doppler_factor;
-            ret = BLACK_BODY_COLOR(temperature) * max(i1/i0,0.0);
-        }
-    }
-
-    ret += SINGLE_WAVELENGTH_COLOR(656.28 * doppler_factor) * red / 0.214 * H_ALPHA_RATIO;
-
-    return ret;
-    {{/observerMotion}}
 }
 
 void main() {
@@ -176,7 +144,7 @@ void main() {
             color += BLACK_BODY_COLOR(t_coord) * star_color.r * STAR_BRIGHTNESS;
         }
 
-        color += galaxy_color(tex_coord, ray_doppler_factor) * GALAXY_BRIGHTNESS;
+        color += galaxy_color(tex_coord) * GALAXY_BRIGHTNESS;
     }
 
     gl_FragColor = color*ray_intensity;
