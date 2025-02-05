@@ -230,16 +230,6 @@ vec4 galaxy_color(vec2 tex_coord, float doppler_factor) {
 
 void main() {
 
-    {{#planetEnabled}}
-    // "constants" derived from uniforms
-    PLANET_RADIUS = planet_radius;
-    PLANET_DISTANCE = max(planet_distance,planet_radius+1.5);
-    PLANET_ORBITAL_ANG_VEL = -1.0 / sqrt(2.0*(PLANET_DISTANCE-1.0)) / PLANET_DISTANCE;
-    float MAX_PLANET_ROT = max((1.0 + PLANET_ORBITAL_ANG_VEL*PLANET_DISTANCE) / PLANET_RADIUS,0.0);
-    PLANET_ROTATION_ANG_VEL = -PLANET_ORBITAL_ANG_VEL + MAX_PLANET_ROT * 0.5;
-    PLANET_GAMMA = 1.0/sqrt(1.0-SQ(PLANET_ORBITAL_ANG_VEL*PLANET_DISTANCE));
-    {{/planetEnabled}}
-
     vec2 p = -1.0 + 2.0 * gl_FragCoord.xy / resolution.xy;
     p.y *= resolution.y / resolution.x;
 
@@ -279,10 +269,6 @@ void main() {
     float t = time;
     float dt = 1.0;
 
-    {{^light_travel_time}}
-    float planet_ang0 = t * PLANET_ORBITAL_ANG_VEL;
-    vec3 planet_pos0 = vec3(cos(planet_ang0), sin(planet_ang0), 0)*PLANET_DISTANCE;
-    {{/light_travel_time}}
 
     vec3 old_pos;
 
