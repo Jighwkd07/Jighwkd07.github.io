@@ -40,29 +40,7 @@ Observer.prototype.move = function(dt) {
 
     var r;
     var v = 0;
-
-    // motion on a pre-defined cirular orbit
-    if (shader.parameters.observer.motion) {
-
-        r = shader.parameters.observer.distance;
-        v =  1.0 / Math.sqrt(2.0*(r-1.0));
-        var ang_vel = v / r;
-        var angle = this.time * ang_vel;
-
-        var s = Math.sin(angle), c = Math.cos(angle);
-
-        this.position.set(c*r, s*r, 0);
-        this.velocity.set(-s*v, c*v, 0);
-
-        var alpha = degToRad(shader.parameters.observer.orbital_inclination);
-        var orbit_coords = (new THREE.Matrix4()).makeRotationY(alpha);
-
-        this.position.applyMatrix4(orbit_coords);
-        this.velocity.applyMatrix4(orbit_coords);
-    }
-    else {
-        r = this.position.length();
-    }
+    r = this.position.length();
 
     if (shader.parameters.gravitational_time_dilation) {
         dt = Math.sqrt((dt*dt * (1.0 - v*v)) / (1-1.0/r));
@@ -89,14 +67,9 @@ function Shader(mustacheTemplate) {
         light_travel_time: true,
         time_scale: 1.0,
         observer: {
-            motion: true,
             distance: 11.0,
             orbital_inclination: -10
         },
-
-        observerMotion: function() {
-            return this.observer.motion;
-        }
     };
     var that = this;
     this.needsUpdate = false;
@@ -263,10 +236,6 @@ function setupGUI() {
     });
 
     var folder = gui.addFolder('Observer');
-    folder.add(p.observer, 'motion').onChange(function(motion) {
-        updateCamera();
-        updateShader();
-    });
     folder.add(p.observer, 'distance').min(1.5).max(30).onChange(updateCamera);
     folder.open();
     //folder.open();
@@ -318,13 +287,8 @@ function updateCamera( event ) {
     var zoom_dist = camera.position.length();
     var m = camera.matrixWorldInverse.elements;
     var camera_matrix;
-
-    if (shader.parameters.observer.motion) {
-        camera_matrix = new THREE.Matrix3();
-    }
-    else {
-        camera_matrix = observer.orientation;
-    }
+    
+    camera_matrix = observer.orientation;
 
     camera_matrix.set(
         // row-major, not the same as .elements (nice)
@@ -334,21 +298,14 @@ function updateCamera( event ) {
         m[4], m[5], m[6]
     );
 
-    if (shader.parameters.observer.motion) {
+    var p = new THREE.Vector3(
+        camera_matrix.elements[6],
+        camera_matrix.elements[7],
+        camera_matrix.elements[8]);
 
-        observer.orientation = observer.orbitalFrame().multiply(camera_matrix);
-
-    } else {
-
-        var p = new THREE.Vector3(
-            camera_matrix.elements[6],
-            camera_matrix.elements[7],
-            camera_matrix.elements[8]);
-
-        var dist = shader.parameters.observer.distance;
-        observer.position.set(-p.x*dist, -p.y*dist, -p.z*dist);
-        observer.velocity.set(0,0,0);
-    }
+    var dist = shader.parameters.observer.distance;
+    observer.position.set(-p.x*dist, -p.y*dist, -p.z*dist);
+    observer.velocity.set(0,0,0);
 }
 
 //두 행렬간 거리 계산, 카메라 변화 감지에 사용
@@ -394,7 +351,6 @@ var getFrameDuration = (function() {
 //렌더링, 화면에 시뮬레이션 결과 표시
 function render() {
     observer.move(getFrameDuration());
-    if (shader.parameters.observer.motion) updateCamera();
     updateUniforms();
     renderer.render( scene, camera );
 }
