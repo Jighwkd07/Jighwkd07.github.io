@@ -5,6 +5,7 @@
 
 if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 
+// 관찰자 생성
 function Observer() {
     this.position = new THREE.Vector3(10,0,0);
     this.velocity = new THREE.Vector3(0,1,0);
@@ -12,6 +13,7 @@ function Observer() {
     this.time = 0.0;
 }
 
+//관찰자 궤도 계산
 Observer.prototype.orbitalFrame = function() {
 
     //var orbital_y = observer.velocity.clone().normalize();
@@ -31,6 +33,7 @@ Observer.prototype.orbitalFrame = function() {
     ).linearPart();
 };
 
+// 관찰자 위치 업데이트
 Observer.prototype.move = function(dt) {
 
     dt *= shader.parameters.time_scale;
@@ -72,6 +75,7 @@ var container, stats;
 var camera, scene, renderer, cameraControls, shader = null;
 var observer = new Observer();
 
+//셰이더
 function Shader(mustacheTemplate) {
     // Compile-time shader parameters
     this.parameters = {
@@ -116,11 +120,13 @@ function Shader(mustacheTemplate) {
     };
 }
 
+//각도 라디안 변경
 function degToRad(a) { return Math.PI * a / 180.0; }
 
 (function(){
     var textures = {};
 
+    //로딩
     function whenLoaded() {
         init(textures);
         animate();
@@ -137,6 +143,7 @@ function degToRad(a) { return Math.PI * a / 180.0; }
         checkLoaded();
     });
 
+    //텍스쳐 로드
     var texLoader = new THREE.TextureLoader();
     function loadTexture(symbol, filename, interpolation) {
         textures[symbol] = null;
@@ -157,6 +164,7 @@ function degToRad(a) { return Math.PI * a / 180.0; }
 
 var updateUniforms;
 
+// 기본적인 씬 설정, GUI 설정
 function init(textures) {
 
     container = document.createElement( 'div' );
@@ -251,6 +259,7 @@ function init(textures) {
     setupGUI();
 }
 
+//사용자 인터페이스 설정
 function setupGUI() {
 
     var hint = $('#hint-text');
@@ -308,6 +317,7 @@ function setupGUI() {
     $(folder.domElement).addClass('planet-controls');
     //folder.open();
 
+    
     function setGuiRowClass(guiEl, klass) {
         $(guiEl.domElement).parent().parent().addClass(klass);
     }
@@ -332,11 +342,13 @@ function setupGUI() {
 
 }
 
+//윈도우 리사이즈 이벤트
 function onWindowResize( event ) {
     renderer.setSize( window.innerWidth, window.innerHeight );
     updateUniforms();
 }
 
+//카메라 초기 위치
 function initializeCamera(camera) {
 
     var pitchAngle = 3.0, yawAngle = 0.0;
@@ -352,6 +364,7 @@ function initializeCamera(camera) {
     camera.position.set(m[2], m[6], m[10]);
 }
 
+//카메라 위치, 방향 업데이트
 function updateCamera( event ) {
 
     var zoom_dist = camera.position.length();
@@ -390,6 +403,7 @@ function updateCamera( event ) {
     }
 }
 
+//두 행렬간 거리 계산, 카메라 변화 감지에 사용
 function frobeniusDistance(matrix1, matrix2) {
     var sum = 0.0;
     for (var i in matrix1.elements) {
@@ -399,6 +413,7 @@ function frobeniusDistance(matrix1, matrix2) {
     return Math.sqrt(sum);
 }
 
+//셰이더 업데이트 필요할 때 렌더링 호출
 function animate() {
     requestAnimationFrame( animate );
 
@@ -417,6 +432,7 @@ function animate() {
 
 var lastCameraMat = new THREE.Matrix4().identity();
 
+//프레임 간 시간 측정, 애니메이션 속도 조절
 var getFrameDuration = (function() {
     var lastTimestamp = new Date().getTime();
     return function() {
@@ -427,6 +443,7 @@ var getFrameDuration = (function() {
     };
 })();
 
+//렌더링, 화면에 시뮬레이션 결과 표시
 function render() {
     observer.move(getFrameDuration());
     if (shader.parameters.observer.motion) updateCamera();
