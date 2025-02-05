@@ -13,7 +13,7 @@ uniform vec3 cam_x;
 uniform vec3 cam_y;
 uniform vec3 cam_z;
 
-uniform sampler2D galaxy_texture, star_texture;
+uniform sampler2D galaxy_texture;
 
 // stepping parameters
 const int NSTEPS = {{n_steps}};
@@ -110,12 +110,6 @@ void main() {
         ray = normalize(pos - old_pos);
         vec2 tex_coord = sphere_map(ray * BG_COORDS);
         float t_coord;
-
-        vec4 star_color = texture2D(star_texture, tex_coord);
-        if (star_color.r > 0.0) {
-            color += star_color.r;
-        }
-
         color += galaxy_color(tex_coord);
     }
 
