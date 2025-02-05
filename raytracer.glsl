@@ -130,22 +130,22 @@ void main() {
     }
 
     // the event horizon is at u = 1
-    if (u < 1.0) {
-        ray = normalize(pos - old_pos);
-        vec2 tex_coord = sphere_map(ray * BG_COORDS);
-        float t_coord;
-
-        vec4 star_color = texture2D(star_texture, tex_coord);
-        if (star_color.r > 0.0) {
-            t_coord = (STAR_MIN_TEMPERATURE +
-                (STAR_MAX_TEMPERATURE-STAR_MIN_TEMPERATURE) * star_color.g)
-                 / ray_doppler_factor;
-
-            color += BLACK_BODY_COLOR(t_coord) * star_color.r * STAR_BRIGHTNESS;
-        }
-
-        color += galaxy_color(tex_coord) * GALAXY_BRIGHTNESS;
-    }
+//    if (u < 1.0) {
+//        ray = normalize(pos - old_pos);
+//        vec2 tex_coord = sphere_map(ray * BG_COORDS);
+//        float t_coord;
+//
+//        vec4 star_color = texture2D(star_texture, tex_coord);
+//        if (star_color.r > 0.0) {
+//            t_coord = (STAR_MIN_TEMPERATURE +
+//                (STAR_MAX_TEMPERATURE-STAR_MIN_TEMPERATURE) * star_color.g)
+//                 / ray_doppler_factor;
+//
+//            color += BLACK_BODY_COLOR(t_coord) * star_color.r * STAR_BRIGHTNESS;
+//        }
+//
+//        color += galaxy_color(tex_coord) * GALAXY_BRIGHTNESS;
+//    }
 
     gl_FragColor = color*ray_intensity;
 }
