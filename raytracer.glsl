@@ -76,7 +76,6 @@ void main() {
     vec3 ray = normalize(p.x*cam_x + p.y*cam_y + FOV_MULT*cam_z);
 
     float ray_intensity = 1.0;
-    float ray_doppler_factor = 1.0;
 
     float step = 0.01;
     vec4 color = vec4(0.0,0.0,0.0,1.0);
@@ -137,11 +136,7 @@ void main() {
 
         vec4 star_color = texture2D(star_texture, tex_coord);
         if (star_color.r > 0.0) {
-            t_coord = (STAR_MIN_TEMPERATURE +
-                (STAR_MAX_TEMPERATURE-STAR_MIN_TEMPERATURE) * star_color.g)
-                 / ray_doppler_factor;
-
-            color += BLACK_BODY_COLOR(t_coord) * star_color.r * STAR_BRIGHTNESS;
+            color += star_color.r
         }
 
         color += galaxy_color(tex_coord) * GALAXY_BRIGHTNESS;
