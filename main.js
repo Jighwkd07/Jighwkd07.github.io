@@ -104,8 +104,6 @@ function degToRad(a) { return Math.PI * a / 180.0; }
     }
 
     loadTexture('galaxy', 'img/milkyway.jpg', THREE.NearestFilter);
-    loadTexture('spectra', 'img/spectra.png', THREE.LinearFilter);
-    loadTexture('moon', 'img/beach-ball.png', THREE.LinearFilter);
     loadTexture('stars', 'img/stars.png', THREE.LinearFilter);
 })();
 
