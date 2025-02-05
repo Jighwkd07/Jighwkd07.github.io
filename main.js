@@ -245,9 +245,6 @@ function setupGUI() {
     folder.add(p, 'doppler_shift').onChange(updateShader);
 
     folder.open();
-
-    folder = gui.addFolder('Time');
-    folder.add(p, 'time_scale').min(0);
     //folder.open();
 
 }
