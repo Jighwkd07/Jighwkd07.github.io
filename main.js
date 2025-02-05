@@ -64,7 +64,6 @@ function Shader(mustacheTemplate) {
         aberration: true,
         beaming: true,
         doppler_shift: true,
-        light_travel_time: true,
         time_scale: 1.0,
         observer: {
             distance: 11.0,
@@ -240,11 +239,6 @@ function setupGUI() {
     folder.open();
     //folder.open();
 
-    
-    function setGuiRowClass(guiEl, klass) {
-        $(guiEl.domElement).parent().parent().addClass(klass);
-    }
-
     folder = gui.addFolder('Relativistic effects');
     folder.add(p, 'aberration').onChange(updateShader);
     folder.add(p, 'beaming').onChange(updateShader);
@@ -253,7 +247,6 @@ function setupGUI() {
     folder.open();
 
     folder = gui.addFolder('Time');
-    folder.add(p, 'light_travel_time').onChange(updateShader);
     folder.add(p, 'time_scale').min(0);
     //folder.open();
 
