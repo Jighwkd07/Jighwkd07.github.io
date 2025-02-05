@@ -300,44 +300,6 @@ void main() {
         {{/gravitational_time_dilation}}
         {{/light_travel_time}}
 
-        {{#accretion_disk}}
-        if (old_pos.z * pos.z < 0.0) {
-            // crossed plane z=0
-
-            float acc_isec_t = -old_pos.z / ray.z;
-            if (acc_isec_t < solid_isec_t) {
-                vec3 isec = old_pos + ray*acc_isec_t;
-
-                float r = length(isec);
-
-                if (r > ACCRETION_MIN_R) {
-                    vec2 tex_coord = vec2(
-                            (r-ACCRETION_MIN_R)/ACCRETION_WIDTH,
-                            atan(isec.x, isec.y)/M_PI*0.5+0.5
-                    );
-
-                    float accretion_intensity = ACCRETION_BRIGHTNESS;
-                    //accretion_intensity *= 1.0 / abs(ray.z/ray_l);
-                    float temperature = ACCRETION_TEMPERATURE;
-
-                    vec3 accretion_v = vec3(-isec.y, isec.x, 0.0) / sqrt(2.0*(r-1.0)) / (r*r);
-                    gamma = 1.0/sqrt(1.0-dot(accretion_v,accretion_v));
-                    float doppler_factor = gamma*(1.0+dot(ray/ray_l,accretion_v));
-                    {{#beaming}}
-                    accretion_intensity /= doppler_factor*doppler_factor*doppler_factor;
-                    {{/beaming}}
-                    {{#doppler_shift}}
-                    temperature /= ray_doppler_factor*doppler_factor;
-                    {{/doppler_shift}}
-
-                    color += texture2D(accretion_disk_texture,tex_coord)
-                        * accretion_intensity
-                        * BLACK_BODY_COLOR(temperature);
-                }
-            }
-        }
-        {{/accretion_disk}}
-
         {{#light_travel_time}}
         t -= dt;
         {{/light_travel_time}}
