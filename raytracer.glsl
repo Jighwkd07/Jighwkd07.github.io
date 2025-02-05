@@ -141,10 +141,10 @@ void main() {
                 (STAR_MAX_TEMPERATURE-STAR_MIN_TEMPERATURE) * star_color.g)
                  / ray_doppler_factor;
 
-            //color += BLACK_BODY_COLOR(t_coord) * star_color.r * STAR_BRIGHTNESS;
+            color += BLACK_BODY_COLOR(t_coord) * star_color.r * STAR_BRIGHTNESS;
         }
 
-        color += galaxy_color(tex_coord)// * GALAXY_BRIGHTNESS;
+        color += galaxy_color(tex_coord) * GALAXY_BRIGHTNESS;
     }
 
     gl_FragColor = color*ray_intensity;
