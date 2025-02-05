@@ -64,21 +64,6 @@ float smooth_step(float x, float threshold) {
     return 1.0 / (1.0 + exp(-(x-threshold)*STEEPNESS));
 }
 
-vec3 lorentz_velocity_transformation(vec3 moving_v, vec3 frame_v) {
-    float v = length(frame_v);
-    if (v > 0.0) {
-        vec3 v_axis = -frame_v / v;
-        float gamma = 1.0/sqrt(1.0 - v*v);
-
-        float moving_par = dot(moving_v, v_axis);
-        vec3 moving_perp = moving_v - v_axis*moving_par;
-
-        float denom = 1.0 + v*moving_par;
-        return (v_axis*(moving_par+v)+moving_perp/gamma)/denom;
-    }
-    return moving_v;
-}
-
 vec3 contract(vec3 x, vec3 d, float mult) {
     float par = dot(x,d);
     return (x-par*d) + d*par*mult;
