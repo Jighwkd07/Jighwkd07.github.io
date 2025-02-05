@@ -81,7 +81,6 @@ function Shader(mustacheTemplate) {
     this.parameters = {
         n_steps: 100,
         quality: 'medium',
-        accretion_disk: true,
         lorentz_contraction: true,
         gravitational_time_dilation: true,
         aberration: true,
@@ -146,7 +145,6 @@ function degToRad(a) { return Math.PI * a / 180.0; }
     loadTexture('spectra', 'img/spectra.png', THREE.LinearFilter);
     loadTexture('moon', 'img/beach-ball.png', THREE.LinearFilter);
     loadTexture('stars', 'img/stars.png', THREE.LinearFilter);
-    loadTexture('accretion_disk', 'img/accretion-disk.png', THREE.LinearFilter);
 })();
 
 var updateUniforms;
@@ -171,7 +169,6 @@ function init(textures) {
         cam_vel: { type: "v3", value: new THREE.Vector3() },
 
         star_texture: { type: "t", value: textures.stars },
-        accretion_disk_texture: { type: "t",  value: textures.accretion_disk },
         galaxy_texture: { type: "t", value: textures.galaxy },
         spectrum_texture: { type: "t", value: textures.spectra }
     };
@@ -264,7 +261,6 @@ function setupGUI() {
 
         updateShader();
     });
-    gui.add(p, 'accretion_disk').onChange(updateShader);
 
     var folder = gui.addFolder('Observer');
     folder.add(p.observer, 'motion').onChange(function(motion) {
