@@ -129,21 +129,11 @@ void main() {
     vec3 pos = cam_pos;
     vec3 ray = normalize(p.x*cam_x + p.y*cam_y + FOV_MULT*cam_z);
 
-    {{#aberration}}
-    ray = lorentz_velocity_transformation(ray, cam_vel);
-    {{/aberration}}
-
     float ray_intensity = 1.0;
     float ray_doppler_factor = 1.0;
 
     float gamma = 1.0/sqrt(1.0-dot(cam_vel,cam_vel));
     ray_doppler_factor = gamma*(1.0 + dot(ray,-cam_vel));
-    {{#beaming}}
-    ray_intensity /= ray_doppler_factor*ray_doppler_factor*ray_doppler_factor;
-    {{/beaming}}
-    {{^doppler_shift}}
-    ray_doppler_factor = 1.0;
-    {{/doppler_shift}}
 
     float step = 0.01;
     vec4 color = vec4(0.0,0.0,0.0,1.0);
