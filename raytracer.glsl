@@ -5,22 +5,6 @@
 
 #define ROT_Y(a) mat3(0, cos(a), sin(a), 1, 0, 0, 0, sin(a), -cos(a))
 
-
-// spectrum texture lookup helper macros
-const float BLACK_BODY_TEXTURE_COORD = 1.0;
-const float SINGLE_WAVELENGTH_TEXTURE_COORD = 0.5;
-const float TEMPERATURE_LOOKUP_RATIO_TEXTURE_COORD = 0.0;
-
-// black-body texture metadata
-const float SPECTRUM_TEX_TEMPERATURE_RANGE = 65504.0;
-const float SPECTRUM_TEX_WAVELENGTH_RANGE = 2048.0;
-const float SPECTRUM_TEX_RATIO_RANGE = 6.48053329012;
-
-// multi-line macros don't seem to work in WebGL :(
-#define BLACK_BODY_COLOR(t) texture2D(spectrum_texture, vec2((t) / SPECTRUM_TEX_TEMPERATURE_RANGE, BLACK_BODY_TEXTURE_COORD))
-#define SINGLE_WAVELENGTH_COLOR(lambda) texture2D(spectrum_texture, vec2((lambda) / SPECTRUM_TEX_WAVELENGTH_RANGE, SINGLE_WAVELENGTH_TEXTURE_COORD))
-#define TEMPERATURE_LOOKUP(ratio) (texture2D(spectrum_texture, vec2((ratio) / SPECTRUM_TEX_RATIO_RANGE, TEMPERATURE_LOOKUP_RATIO_TEXTURE_COORD)).r * SPECTRUM_TEX_TEMPERATURE_RANGE)
-
 uniform vec2 resolution;
 uniform float time;
 
@@ -34,13 +18,6 @@ uniform sampler2D galaxy_texture, star_texture, spectrum_texture;
 // stepping parameters
 const int NSTEPS = {{n_steps}};
 const float MAX_REVOLUTIONS = 2.0;
-
-const float STAR_MIN_TEMPERATURE = 4000.0;
-const float STAR_MAX_TEMPERATURE = 15000.0;
-
-const float STAR_BRIGHTNESS = 1.0;
-const float GALAXY_BRIGHTNESS = 0.4;
-
 
 // background texture coordinate system
 mat3 BG_COORDS = ROT_Y(45.0 * DEG_TO_RAD);
@@ -139,7 +116,7 @@ void main() {
             color += star_color.r
         }
 
-        color += galaxy_color(tex_coord) * GALAXY_BRIGHTNESS;
+        color += galaxy_color(tex_coord)
     }
 
     gl_FragColor = color*ray_intensity;
