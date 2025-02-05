@@ -113,10 +113,10 @@ void main() {
 
         vec4 star_color = texture2D(star_texture, tex_coord);
         if (star_color.r > 0.0) {
-            color += star_color.r
+            color += star_color.r;
         }
 
-        color += galaxy_color(tex_coord)
+        color += galaxy_color(tex_coord);
     }
 
     gl_FragColor = color*ray_intensity;
