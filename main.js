@@ -60,9 +60,6 @@ function Shader(mustacheTemplate) {
         n_steps: 100,
         lorentz_contraction: true,
         gravitational_time_dilation: true,
-        aberration: true,
-        beaming: true,
-        doppler_shift: true,
         time_scale: 1.0,
         observer: {
             distance: 11.0,
@@ -223,12 +220,6 @@ function setupGUI() {
     folder.add(p.observer, 'distance').min(1.5).max(30).onChange(updateCamera);
     folder.open();
     //folder.open();
-
-    folder = gui.addFolder('Relativistic effects');
-    folder.add(p, 'aberration').onChange(updateShader);
-    folder.add(p, 'beaming').onChange(updateShader);
-    folder.add(p, 'doppler_shift').onChange(updateShader);
-
     folder.open();
     //folder.open();
 
