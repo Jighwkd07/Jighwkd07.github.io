@@ -194,19 +194,6 @@ function init(textures) {
     onWindowResize();
 
     window.addEventListener( 'resize', onWindowResize, false );
-
-    setupGUI();
-}
-
-//사용자 인터페이스 설정
-function setupGUI() {
-    var p = shader.parameters;
-
-    function updateShader() {
-        scene.updateShader();
-    }
-
-    var gui = new dat.GUI();
 }
 
 //윈도우 리사이즈 이벤트
