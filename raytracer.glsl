@@ -30,8 +30,6 @@ uniform vec3 cam_y;
 uniform vec3 cam_z;
 uniform vec3 cam_vel;
 
-uniform float planet_distance, planet_radius;
-
 uniform sampler2D galaxy_texture, star_texture,
     accretion_disk_texture, planet_texture, spectrum_texture;
 
@@ -50,25 +48,12 @@ const float STAR_MAX_TEMPERATURE = 15000.0;
 const float STAR_BRIGHTNESS = 1.0;
 const float GALAXY_BRIGHTNESS = 0.4;
 
-const float PLANET_AMBIENT = 0.1;
-const float PLANET_LIGHTNESS = 1.5;
 
 // background texture coordinate system
 mat3 BG_COORDS = ROT_Y(45.0 * DEG_TO_RAD);
 
-// planet texture coordinate system
-const float PLANET_AXIAL_TILT = 30.0 * DEG_TO_RAD;
-mat3 PLANET_COORDS = ROT_Y(PLANET_AXIAL_TILT);
-
 const float FOV_ANGLE_DEG = 90.0;
 float FOV_MULT = 1.0 / tan(DEG_TO_RAD * FOV_ANGLE_DEG*0.5);
-
-// derived "constants" (from uniforms)
-float PLANET_RADIUS,
-    PLANET_DISTANCE,
-    PLANET_ORBITAL_ANG_VEL,
-    PLANET_ROTATION_ANG_VEL,
-    PLANET_GAMMA;
 
 vec2 sphere_map(vec3 p) {
     return vec2(atan(p.x,p.y)/M_PI*0.5+0.5, asin(p.z)/M_PI+0.5);
