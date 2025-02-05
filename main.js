@@ -213,8 +213,6 @@ function setupGUI() {
     }
 
     var gui = new dat.GUI();
-        updateShader();
-    });
 
     var folder = gui.addFolder('Observer');
     folder.add(p.observer, 'distance').min(1.5).max(30).onChange(updateCamera);
