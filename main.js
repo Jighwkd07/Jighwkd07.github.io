@@ -123,7 +123,6 @@ function degToRad(a) { return Math.PI * a / 180.0; }
 
     function whenLoaded() {
         init(textures)
-        $('.initially-hidden').removeClass('initially-hidden');
         animate();
     }
 
