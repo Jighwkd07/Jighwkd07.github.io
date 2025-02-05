@@ -213,14 +213,6 @@ function setupGUI() {
     }
 
     var gui = new dat.GUI();
-
-    var folder = gui.addFolder('Observer');
-    folder.add(p.observer, 'distance').min(1.5).max(30).onChange(updateCamera);
-    folder.open();
-    //folder.open();
-    folder.open();
-    //folder.open();
-
 }
 
 //윈도우 리사이즈 이벤트
