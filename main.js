@@ -104,7 +104,6 @@ function degToRad(a) { return Math.PI * a / 180.0; }
     }
 
     loadTexture('galaxy', 'img/galaxy.jpg', THREE.NearestFilter);
-    loadTexture('stars', 'img/stars.png', THREE.LinearFilter);
 })();
 
 var updateUniforms;
@@ -128,7 +127,6 @@ function init(textures) {
         cam_z: { type: "v3", value: new THREE.Vector3() },
         cam_vel: { type: "v3", value: new THREE.Vector3() },
 
-        star_texture: { type: "t", value: textures.stars },
         galaxy_texture: { type: "t", value: textures.galaxy }
     };
 
